@@ -3,3 +3,5 @@ lxml
 requests
 selenium
 undetected-chromedriver
+cloudscraper
+zenrows
