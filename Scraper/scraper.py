@@ -31,17 +31,14 @@ def short_div(str):
 def html_info():
     page_source = scrape_page_source(URL)
     soup = BeautifulSoup(page_source, "lxml")
-    pretty_soup = soup.prettify()
-    div_elements = div_elements = soup.find_all('div')
-    div_info_list = []
-    for div in div_elements:
-        div_info = div.text  # Get the text content of the <div> element
-        if re.match(r'^\s*\d+\.\s', div_info):  # Check if the text matches the pattern
-            div_info_list.append(short_div(div_info))
-    div_info_list=div_info_list[2:]
-    for div_info in div_info_list:
-        print("next:")
-        print(div_info)
-    print(f"finished, div info list is:{len(div_info_list)}")
+    # Find the relevant elements and save them in a list
+    div_elements = soup.find_all('div', id=lambda x: x and x.startswith('list-sc-item_'))
+    div_text_list = [div.get_text() for div in div_elements]
+    result_list = [s[next((i for i, c in enumerate(s) if c.isalpha()), 0):] for s in div_text_list]
+    for d in result_list:
+        print("the result:")
+        print(d)
+    print("finished")
+
 
 
