@@ -20,6 +20,8 @@ def handle_response(text: str) -> str:
     processed: str = text.lower()
     if 'set language' in processed:
         return 'okay'
+    if processed.isnumeric() and 1 < int(processed) < 25:
+        return f'joke number {processed} is:'
     return 'What? type again.'
 
 
