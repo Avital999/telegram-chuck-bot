@@ -1,6 +1,8 @@
-from scraper import html_info
+from scraper import jokes_list
 def main():
-    html_info()
+    jokes = jokes_list()
+    for joke in jokes:
+        print(joke)
 
 if __name__ == "__main__":
     main()
