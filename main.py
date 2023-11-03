@@ -1,6 +1,8 @@
 from typing import Final
 from telegram import Update
-from telegram.ext import Application,CommandHandler, MessageHandler, filters, ContextTypes
+from telegram.ext import Application, CommandHandler, MessageHandler, filters, ContextTypes
+from jokes_scraper import chuck_joke
+
 
 TOKEN: Final = open("bottoken.txt", "r").read().strip("\n")
 BOT_USERNAME: Final = '@ch_jokes_bot'
@@ -21,7 +23,7 @@ def handle_response(text: str) -> str:
     if 'set language' in processed:
         return 'okay'
     if processed.isnumeric() and 1 < int(processed) < 25:
-        return f'joke number {processed} is:'
+        return f'joke number {processed} is: {chuck_joke(int(processed))}'
     return 'What? type again.'
 
 

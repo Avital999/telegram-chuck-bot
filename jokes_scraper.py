@@ -48,4 +48,7 @@ def jokes_list():
     return jokes
 
 
+def chuck_joke(joke_number: int) -> str:
+    return jokes_list()[joke_number-1]
+
 
