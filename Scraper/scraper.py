@@ -16,28 +16,25 @@ def scrape_page_source(url):
     driver.quit()
     return page_source
 
-def short_div(str):
-    match = re.search(r'[a-zA-Z]', str)
+def get_relevant_elements(soup):
+    div_elements = soup.find_all('div', id=lambda x: x and x.startswith('list-sc-item_'))
+    div_text_list = [div.get_text() for div in div_elements]
+    return div_text_list
 
-    if match:
-        start_index = match.start()
-        str1 = str[start_index:]
-        print(str1)
-        return str1
-    else:
-        print("No English letter found in the string.")
+def cleaned_elements(elements):
+    result_list = [s.lstrip().rstrip() for s in elements]
+    result_list = [s[next((i for i, c in enumerate(s) if c.isalpha()), 0):] for s in result_list]
+    return result_list
 
 
 def html_info():
     page_source = scrape_page_source(URL)
     soup = BeautifulSoup(page_source, "lxml")
-    # Find the relevant elements and save them in a list
-    div_elements = soup.find_all('div', id=lambda x: x and x.startswith('list-sc-item_'))
-    div_text_list = [div.get_text() for div in div_elements]
-    result_list = [s[next((i for i, c in enumerate(s) if c.isalpha()), 0):] for s in div_text_list]
-    for d in result_list:
-        print("the result:")
-        print(d)
+    elements = get_relevant_elements(soup)
+    quotes = cleaned_elements(elements)
+    for q in quotes:
+        print("the quote:")
+        print(q)
     print("finished")
 
 
