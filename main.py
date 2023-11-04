@@ -2,10 +2,12 @@ from typing import Final
 from telegram import Update
 from telegram.ext import Application, CommandHandler, MessageHandler, filters, ContextTypes
 from jokes_scraper import chuck_joke
+from translator import translate_text
 
 
 TOKEN: Final = open("bottoken.txt", "r").read().strip("\n")
 BOT_USERNAME: Final = '@ch_jokes_bot'
+
 
 
 # Commands
@@ -20,11 +22,24 @@ async def help_command(update:Update, context:ContextTypes.DEFAULT_TYPE):
 # Responses
 def handle_response(text: str) -> str:
     processed: str = text.lower()
+
     if 'set language' in processed:
-        return 'okay'
+        language = processed[13:]
+        with open('language.txt', "w") as file:
+            file.write(language)
+        return translate_text(target_language= language, text="no problem")
+
     if processed.isnumeric() and 1 < int(processed) < 25:
-        return f'joke number {processed} is: {chuck_joke(int(processed))}'
-    return 'What? type again.'
+        language = ''
+        with open('language.txt', "r") as file:
+            language = file.read()
+        if len(language) == 0:
+            return 'please set language first.'
+        joke: str = chuck_joke(int(processed))
+        translated_joke: str = translate_text(text=joke, target_language=language)
+        return translated_joke
+
+    return 'I do not understand you. you can set langauge X or choose a number between 1 to 25 to get a joke!'
 
 
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
