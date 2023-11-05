@@ -163,3 +163,4 @@ cython_debug/
 /bottoken.txt
 /amazonkey.txt
 /language.text
+/secret.py
