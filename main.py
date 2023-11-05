@@ -9,6 +9,25 @@ TOKEN: Final = open("bottoken.txt", "r").read().strip("\n")
 BOT_USERNAME: Final = '@ch_jokes_bot'
 
 
+# helpful functions
+def set_language(language: str):
+    with open('language.txt', "w") as file:
+        file.write(language)
+    return translate_text(target_language=language, text="no problem")
+
+
+def send_chuck_joke(joke_number: int):
+    # Check if the user already chose a language
+    with open('language.txt', "r") as file:
+        language = file.read()
+    if len(language) == 0:
+        return 'please set language first.'
+
+    # Send the joke to the user
+    joke: str = chuck_joke(joke_number)
+    translated_joke: str = translate_text(text=joke, target_language=language)
+    return translated_joke
+
 
 # Commands
 async def start_command(update:Update, context:ContextTypes.DEFAULT_TYPE):
@@ -24,20 +43,14 @@ def handle_response(text: str) -> str:
     processed: str = text.lower()
 
     if 'set language' in processed:
-        language = processed[13:]
-        with open('language.txt', "w") as file:
-            file.write(language)
-        return translate_text(target_language= language, text="no problem")
+        return set_language(language=processed[13:])
 
-    if processed.isnumeric() and 1 < int(processed) < 25:
-        language = ''
-        with open('language.txt', "r") as file:
-            language = file.read()
-        if len(language) == 0:
-            return 'please set language first.'
-        joke: str = chuck_joke(int(processed))
-        translated_joke: str = translate_text(text=joke, target_language=language)
-        return translated_joke
+    if processed.isnumeric():
+        joke_number = int(processed)
+        if 1 < joke_number < 25:
+            return send_chuck_joke(joke_number)
+        else:
+            return 'In case you wanna hear a joke, please choose number between 1 and 25.'
 
     return 'I do not understand you. you can set langauge X or choose a number between 1 to 25 to get a joke!'
 
