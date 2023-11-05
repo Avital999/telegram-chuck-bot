@@ -31,24 +31,31 @@ def send_chuck_joke(joke_number: int):
 
 # Commands
 async def start_command(update:Update, context:ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text("Hey! Wanna hear a joke?")
+    await update.message.reply_text("Hey! Wanna hear a joke? set a language and choose a number between 1 and 25.")
 
 
 async def help_command(update:Update, context:ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text("fulfill later the command.")
+    friendly_message = ("\U0001F44B Hello! I'm a bot that shares Chuck Norris jokes."
+                        "\nTo get started, follow these steps:\n\n"
+                        "1. Set your preferred language by typing 'set language X' and pressing Enter. "
+                        "Replace 'X' with the language you want to choose.\n\n"
+                        "2. Once you've set your language, select a number between 1 and 25, hit Enter, "
+                        "and you'll receive a Chuck Norris joke in your chosen language. \n"
+                        "\nEnjoy the laughter! \U0001F604")
+    await update.message.reply_text(friendly_message)
 
 
 # Responses
 def handle_response(text: str) -> str:
-    processed: str = text.lower()
+    text = text.lower()
 
-    if 'set language' in processed:
-        return set_language(language=processed[13:])
+    if 'set language' in text:
+        return set_language(language=text[13:])
 
-    if processed.isnumeric():
-        joke_number = int(processed)
-        if 1 < joke_number < 25:
-            return send_chuck_joke(joke_number)
+    if text.isnumeric():
+        joke_num = int(text)
+        if 1 < joke_num < 25:
+            return send_chuck_joke(joke_num)
         else:
             return 'In case you wanna hear a joke, please choose number between 1 and 25.'
 
