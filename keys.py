@@ -15,8 +15,7 @@ def access_key():
 
     # Decrypt the AWS access key and decode it to a UTF-8 string
     cipher_suite = Fernet(encryption_key)
-    access_key = cipher_suite.decrypt(lines[0].strip()).decode('utf-8')
-    return access_key
+    return cipher_suite.decrypt(lines[0].strip()).decode('utf-8')
 
 
 def secret_key():
@@ -27,5 +26,4 @@ def secret_key():
 
     # Decrypt the AWS secret key and decode it to a UTF-8 string
     cipher_suite = Fernet(encryption_key)
-    secret_key = cipher_suite.decrypt(lines[1].strip()).decode('utf-8')
-    return secret_key
+    return cipher_suite.decrypt(lines[1].strip()).decode('utf-8')
