@@ -11,12 +11,13 @@ def language_name_to_iso_code(language_name):
         return None
 
 
-def access_key():
-    # Read the encryption key from the 'encryptionkey.txt' file
+def key_for_encryption():
     with open("encryptionkey.txt", "rb") as key_file:
         encryption_key = key_file.read()
+    return encryption_key
 
-    # Read the encrypted keys from the 'encrypted_keys.txt' file
+
+def access_key(encryption_key):
     with open("encrypted_keys.txt", "rb") as file:
         lines = file.readlines()
 
@@ -26,12 +27,7 @@ def access_key():
     return access_key
 
 
-def secret_key():
-    # Read the encryption key from the 'encryptionkey.txt' file
-    with open("encryptionkey.txt", "rb") as key_file:
-        encryption_key = key_file.read()
-
-    # Read the encrypted keys from the 'encrypted_keys.txt' file
+def secret_key(encryption_key):
     with open("encrypted_keys.txt", "rb") as file:
         lines = file.readlines()
 
@@ -45,9 +41,11 @@ def translate_text(text: str, target_language: str) -> str:
     """ Given a text and a target language, using AWS translate services,
     translate the given text to the language."""
 
+    encryption_key = key_for_encryption()
+
     translate = boto3.client(service_name='translate', region_name='us-east-1', use_ssl=True,
-                             aws_access_key_id=access_key(),
-                             aws_secret_access_key=secret_key())
+                             aws_access_key_id=access_key(encryption_key),
+                             aws_secret_access_key=secret_key(encryption_key))
 
     result = translate.translate_text(Text=text,
                                       SourceLanguageCode="en",
