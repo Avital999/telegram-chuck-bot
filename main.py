@@ -1,10 +1,9 @@
 from typing import Final
 from telegram import Update
 from telegram.ext import Application, CommandHandler, MessageHandler, filters, ContextTypes
-from jokes_scraper import chuck_joke
+from jokes_scraper import scrape_jokes_from_website
 from translator import translate_text, language_exists
 from manage_lanagues import create_csv,update_user_preferred_language,LANGUAGES_CSV
-import json
 import csv
 import os
 
@@ -16,30 +15,30 @@ BOT_USERNAME: Final = '@ch_jokes_bot'
 # helpful functions
 
 def add_language(user_id: int, language):
-    if not os.path.exists(LANGUAGES_CSV):
-        create_csv()
     update_user_preferred_language(user_id=user_id, language=language)
     return translate_text(target_language=language, text="no problem")
 
 
-def translated_joke(joke, language):
+def translate_joke(joke, language):
     return translate_text(text=joke, target_language=language)
 
 
-def send_chuck_joke(joke_number: int, user_id: int):
-    # Check if the CSV file exists and user_id exists in the CSV
-    if not os.path.exists(LANGUAGES_CSV):
-        return 'Please set language first'
-
-    # Read the CSV file and search for the user_id
+def get_language_from_user_id(user_id):
     with open(LANGUAGES_CSV, 'r') as csv_file:
         csv_reader = csv.DictReader(csv_file)
         for row in csv_reader:
             if int(row['user_id']) == user_id:
-                return translated_joke(joke=chuck_joke(joke_number), language=row['language'])
+                return row['language']
+    return None
 
-    # In case user_id doesn't exist in the CSV
-    return 'Please set language first'
+def send_chuck_joke(joke_number: int, user_id: int):
+    joke = scrape_jokes_from_website()[joke_number - 1]
+    language = get_language_from_user_id(user_id)
+    if not language:
+        return 'Please set language first'
+
+    translated_joke = translate_joke(joke=joke, language=language)
+    return translated_joke
 
 
 # Commands
@@ -65,7 +64,7 @@ async def help_command(update:Update, context:ContextTypes.DEFAULT_TYPE):
 def handle_response(text: str, user_id:int) -> str:
     text = text.lower()
 
-    if 'set language' in text:
+    if text.startswith('set language'):
         language = text[13:]
         if not language_exists(language):
             return 'This language does not exists. Please choose an existing language!'
@@ -105,6 +104,9 @@ async def error(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 def main():
+    if not os.path.exists(LANGUAGES_CSV):
+        create_csv()
+
     print('Starting bot...')
     app = Application.builder().token(TOKEN).build()
 

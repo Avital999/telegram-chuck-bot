@@ -54,7 +54,5 @@ def scrape_jokes_from_website():
     return jokes
 
 
-def chuck_joke(joke_number: int) -> str:
-    return scrape_jokes_from_website()[joke_number - 1]
 
 
