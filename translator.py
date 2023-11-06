@@ -1,6 +1,6 @@
 import boto3
 import langcodes
-from keys import access_key,secret_key
+from keys import get_aws_access_key,get_aws_secret_key
 
 
 def convert_language_name_to_iso_code(language_name):
@@ -29,7 +29,7 @@ def translate_text(text: str, target_language: str) -> str:
 
 def create_boto3_client():
     return boto3.client(service_name='translate', region_name='us-east-1', use_ssl=True,
-                        aws_access_key_id=access_key(),
-                        aws_secret_access_key=secret_key())
+                        aws_access_key_id=get_aws_access_key(),
+                        aws_secret_access_key=get_aws_secret_key())
 
 

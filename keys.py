@@ -1,29 +1,31 @@
 from cryptography.fernet import Fernet
 
+ENCRYPTED_KEYS_PATH = "encrypted_keys.txt"
 
-def key_for_encryption():
+encrypted_secret_key_position = 1
+encrypted_access_key_position = 0
+
+
+def get_aws_access_key():
+    encryption_key = get_key_for_encrption()
+    return decrypt_key_from_file(encryption_key,encrypted_access_key_position)
+
+
+def get_aws_secret_key():
+    encryption_key = get_key_for_encrption()
+    return decrypt_key_from_file(encryption_key, encrypted_secret_key_position)
+
+
+def get_key_for_encrption():
     with open("encryptionkey.txt", "rb") as key_file:
         encryption_key = key_file.read()
     return encryption_key
 
 
-def access_key():
-    encryption_key = key_for_encryption()
-
-    with open("encrypted_keys.txt", "rb") as file:
+def decrypt_key_from_file(encryption_key, position):
+    with open(ENCRYPTED_KEYS_PATH, "rb") as file:
         lines = file.readlines()
-
-    # Decrypt the AWS access key and decode it to a UTF-8 string
     cipher_suite = Fernet(encryption_key)
-    return cipher_suite.decrypt(lines[0].strip()).decode('utf-8')
+    return cipher_suite.decrypt(lines[position].strip()).decode('utf-8')
 
 
-def secret_key():
-    encryption_key = key_for_encryption()
-
-    with open("encrypted_keys.txt", "rb") as file:
-        lines = file.readlines()
-
-    # Decrypt the AWS secret key and decode it to a UTF-8 string
-    cipher_suite = Fernet(encryption_key)
-    return cipher_suite.decrypt(lines[1].strip()).decode('utf-8')
