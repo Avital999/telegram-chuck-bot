@@ -45,12 +45,4 @@ def update_csv(user_id: int, language: str):
         csv_writer.writerows(data)
 
 
-def matching_language(user_id:int):
-    # Read the CSV file and search for the user_id
-    with open(LANGUAGES_CSV, 'r') as csv_file:
-        csv_reader = csv.DictReader(csv_file)
-        for row in csv_reader:
-            if int(row['user_id']) == user_id:
-                return
-
 
