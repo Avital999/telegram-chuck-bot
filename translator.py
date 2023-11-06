@@ -15,7 +15,6 @@ def translate_text(text: str, target_language: str) -> str:
     """ Given a text and a target language, using AWS translate services,
     translate the given text to the language."""
 
-
     translate = boto3.client(service_name='translate', region_name='us-east-1', use_ssl=True,
                              aws_access_key_id=access_key(),
                              aws_secret_access_key=secret_key())

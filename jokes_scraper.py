@@ -14,8 +14,8 @@ def scrape_page_source(url):
     driver = webdriver.Chrome(options=options)
     driver.get(url)
 
-    # sleep random time between 8 and 12 seconds
-    random_sleeping_time = round(random.uniform(8, 12), 3)
+    # sleep random time between 1 and 2 seconds
+    random_sleeping_time = round(random.uniform(1, 2), 3)
     time.sleep(random_sleeping_time)
 
     page_source = driver.page_source
