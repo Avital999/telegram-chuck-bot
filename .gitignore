@@ -164,5 +164,4 @@ cython_debug/
 /amazonkey.txt
 /language.text
 /secret.py
-/chip1.txt
-/chip2.txt
+/encryptionkey.txt
