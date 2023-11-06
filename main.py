@@ -22,6 +22,10 @@ def add_language(user_id: int, language):
     return translate_text(target_language=language, text="no problem")
 
 
+def translated_joke(joke, language):
+    return translate_text(text=joke, target_language=language)
+
+
 def send_chuck_joke(joke_number: int, user_id: int):
     # Check if the CSV file exists and user_id exists in the CSV
     if not os.path.exists(LANGUAGES_CSV):
@@ -32,12 +36,9 @@ def send_chuck_joke(joke_number: int, user_id: int):
         csv_reader = csv.DictReader(csv_file)
         for row in csv_reader:
             if int(row['user_id']) == user_id:
-                language = row['language']
-                joke = chuck_joke(joke_number)
-                translated_joke = translate_text(text=joke, target_language=language)
-                return translated_joke
+                return translated_joke(joke=chuck_joke(joke_number), language=row['language'])
 
-    # If user_id doesn't exist in the CSV, return 'Please set language first'
+    # In case user_id doesn't exist in the CSV
     return 'Please set language first'
 
 
