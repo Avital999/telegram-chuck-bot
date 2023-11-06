@@ -44,7 +44,10 @@ def send_chuck_joke(joke_number: int, user_id: int):
 
 # Commands
 async def start_command(update:Update, context:ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text("Hey! Wanna hear a joke? set a language and choose a number between 1 and 25.")
+    start_message = ("Hey! Want to hear a Chuck Norris joke? \U0001F604\n"
+                     "Set a language and choose a number between 1 and 25.\n"
+                     "For instructions, you can enter /help. \U0001F50D")
+    await update.message.reply_text(start_message)
 
 
 async def help_command(update:Update, context:ContextTypes.DEFAULT_TYPE):
@@ -70,9 +73,9 @@ def handle_response(text: str, user_id:int) -> str:
         if 1 <= joke_num <= 25:
             return send_chuck_joke(joke_num,user_id=int(user_id))
         else:
-            return 'In case you wanna hear a joke, please choose number between 1 and 25.'
+            return 'Ready for a joke? Please choose a number between 1 and 25! \U0001F604'
 
-    return 'I do not understand you. you can set langauge X or choose a number between 1 to 25 to get a joke!'
+    return 'I do not understand you. Please press /help for instructions.'
 
 
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -85,7 +88,7 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if message_type == 'group':
         if BOT_USERNAME in text:
             new_text: str = text.replace(BOT_USERNAME, '')
-            response: str = handle_response(new_text,user_id=user_id)
+            response: str = handle_response(new_text, user_id=user_id)
         else:
             return
     else:
