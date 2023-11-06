@@ -10,29 +10,20 @@ import os
 
 TOKEN: Final = open("bottoken.txt", "r").read().strip("\n")
 BOT_USERNAME: Final = '@ch_jokes_bot'
+LANGUAGES_CSV: Final = 'languages.csv'
 
 
 # helpful functions
-def add_language(user_id: int, language):
-    # Define the file path
-    file_path = 'languages.csv'
+def create_csv():
+    with open(LANGUAGES_CSV, 'w', newline='') as csv_file:
+        fieldnames = ['user_id', 'language']
+        csv_writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
+        csv_writer.writeheader()
 
-    # Check if the CSV file already exists, and create it if not
-    if not os.path.exists(file_path):
-        with open(file_path, 'w', newline='') as csv_file:
-            fieldnames = ['user_id', 'language']
-            csv_writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
-            csv_writer.writeheader()
 
-    # Open the CSV file for reading and create a list of dictionaries from its contents
-    with open(file_path, 'r') as csv_file:
-        csv_reader = csv.DictReader(csv_file)
-        data = list(csv_reader)
-
-    # Flag to check if the user_id exists in the CSV
-    user_id_exists = False
-
+def update_data(data, user_id: int, language: str):
     # Find the matching row and update it if user_id exists
+    user_id_exists = False
     for row in data:
         if int(row['user_id']) == user_id:
             row['language'] = language
@@ -43,26 +34,39 @@ def add_language(user_id: int, language):
     if not user_id_exists:
         data.append({'user_id': str(user_id), 'language': language})
 
+    return data
+
+
+def update_csv(user_id: int, language: str):
+    # Open the CSV file for reading and create a list of dictionaries from its contents
+    with open(LANGUAGES_CSV, 'r') as csv_file:
+        csv_reader = csv.DictReader(csv_file)
+        data = list(csv_reader)
+
+    data = update_data(data=data, user_id=user_id, language=language)
+
     # Write the updated data back to the CSV file
-    with open(file_path, 'w', newline='') as csv_file:
+    with open(LANGUAGES_CSV, 'w', newline='') as csv_file:
         fieldnames = ['user_id', 'language']
         csv_writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
         csv_writer.writeheader()
         csv_writer.writerows(data)
 
+
+def add_language(user_id: int, language):
+    if not os.path.exists(LANGUAGES_CSV):
+        create_csv()
+    update_csv(user_id=user_id, language=language)
     return translate_text(target_language=language, text="no problem")
 
 
 def send_chuck_joke(joke_number: int, user_id: int):
-    # Define the file path
-    file_path = 'languages.csv'
-
     # Check if the CSV file exists and user_id exists in the CSV
-    if not os.path.exists(file_path):
+    if not os.path.exists(LANGUAGES_CSV):
         return 'Please set language first'
 
     # Read the CSV file and search for the user_id
-    with open(file_path, 'r') as csv_file:
+    with open(LANGUAGES_CSV, 'r') as csv_file:
         csv_reader = csv.DictReader(csv_file)
         for row in csv_reader:
             if int(row['user_id']) == user_id:
@@ -100,7 +104,7 @@ def handle_response(text: str, user_id:int) -> str:
 
     if text.isnumeric():
         joke_num = int(text)
-        if 1 < joke_num < 25:
+        if 1 <= joke_num <= 25:
             return send_chuck_joke(joke_num,user_id=int(user_id))
         else:
             return 'In case you wanna hear a joke, please choose number between 1 and 25.'
