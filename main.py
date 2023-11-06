@@ -3,7 +3,7 @@ from telegram import Update
 from telegram.ext import Application, CommandHandler, MessageHandler, filters, ContextTypes
 from jokes_scraper import chuck_joke
 from translator import translate_text, language_exists
-from manage_lanagues import create_csv,update_csv,LANGUAGES_CSV
+from manage_lanagues import create_csv,update_user_preferred_language,LANGUAGES_CSV
 import json
 import csv
 import os
@@ -18,7 +18,7 @@ BOT_USERNAME: Final = '@ch_jokes_bot'
 def add_language(user_id: int, language):
     if not os.path.exists(LANGUAGES_CSV):
         create_csv()
-    update_csv(user_id=user_id, language=language)
+    update_user_preferred_language(user_id=user_id, language=language)
     return translate_text(target_language=language, text="no problem")
 
 

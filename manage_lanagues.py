@@ -13,36 +13,35 @@ def create_csv():
         csv_writer.writeheader()
 
 
-def update_data(data, user_id: int, language: str):
-    # Find the matching row and update it if user_id exists
-    user_id_exists = False
+def update_languages_list(data, user_id: int, language: str):
     for row in data:
         if int(row['user_id']) == user_id:
             row['language'] = language
-            user_id_exists = True
-            break
+            return data
 
-    # If user_id doesn't exist, add a new row
-    if not user_id_exists:
-        data.append({'user_id': str(user_id), 'language': language})
-
+    data.append({'user_id': str(user_id), 'language': language})
     return data
 
 
-def update_csv(user_id: int, language: str):
-    # Open the CSV file for reading and create a list of dictionaries from its contents
-    with open(LANGUAGES_CSV, 'r') as csv_file:
-        csv_reader = csv.DictReader(csv_file)
-        data = list(csv_reader)
+def update_user_preferred_language(user_id: int, language: str):
+    data = read_data_from_csv()
+    data = update_languages_list(data=data, user_id=user_id, language=language)
+    write_data_to_csv(data)
 
-    data = update_data(data=data, user_id=user_id, language=language)
 
-    # Write the updated data back to the CSV file
+def write_data_to_csv(data):
     with open(LANGUAGES_CSV, 'w', newline='') as csv_file:
         fieldnames = ['user_id', 'language']
         csv_writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
         csv_writer.writeheader()
         csv_writer.writerows(data)
+
+
+def read_data_from_csv():
+    with open(LANGUAGES_CSV, 'r') as csv_file:
+        csv_reader = csv.DictReader(csv_file)
+        data = list(csv_reader)
+    return data
 
 
 
