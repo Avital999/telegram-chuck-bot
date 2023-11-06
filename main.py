@@ -2,7 +2,7 @@ from typing import Final
 from telegram import Update
 from telegram.ext import Application, CommandHandler, MessageHandler, filters, ContextTypes
 from jokes_scraper import chuck_joke
-from translator import translate_text
+from translator import translate_text, language_exists
 from manage_lanagues import create_csv,update_csv,LANGUAGES_CSV
 import json
 import csv
@@ -66,7 +66,10 @@ def handle_response(text: str, user_id:int) -> str:
     text = text.lower()
 
     if 'set language' in text:
-        return add_language(user_id=int(user_id), language=text[13:])
+        language = text[13:]
+        if not language_exists(language):
+            return 'This language does not exists. Please choose an existing language!'
+        return add_language(user_id=int(user_id), language=language)
 
     if text.isnumeric():
         joke_num = int(text)

@@ -7,13 +7,18 @@ def language_name_to_iso_code(language_name):
     try:
         code = langcodes.find(language_name).language
         return code
-    except langcodes.LanguageNotFoundError:
+    except Exception:
         return None
+
+
+def language_exists(language):
+    return language_name_to_iso_code(language) is not None
 
 
 def translate_text(text: str, target_language: str) -> str:
     """ Given a text and a target language, using AWS translate services,
     translate the given text to the language."""
+
 
     translate = boto3.client(service_name='translate', region_name='us-east-1', use_ssl=True,
                              aws_access_key_id=access_key(),
