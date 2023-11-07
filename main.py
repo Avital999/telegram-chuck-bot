@@ -8,7 +8,6 @@ import csv
 import os
 
 
-TOKEN: Final = open("bottoken.txt", "r").read().strip("\n")
 BOT_USERNAME: Final = '@ch_jokes_bot'
 
 
@@ -107,8 +106,10 @@ def main():
     if not os.path.exists(LANGUAGES_CSV):
         create_csv()
 
+    bot_token = input("Please enter your token: ")
+
     print('Starting bot...')
-    app = Application.builder().token(TOKEN).build()
+    app = Application.builder().token(bot_token).build()
 
     # Commands
     app.add_handler(CommandHandler('start', start_command))
