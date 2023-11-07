@@ -8,7 +8,7 @@ import csv
 import os
 
 
-BOT_USERNAME: Final = '@ch_jokes_bot'
+BOT_USERNAME = '@ch_jokes_bot'
 
 
 # helpful functions
