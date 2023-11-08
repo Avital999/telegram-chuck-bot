@@ -1,0 +1,13 @@
+beautifulsoup4
+lxml
+requests
+selenium
+undetected-chromedriver
+cloudscraper
+zenrows
+pandas
+python-telegram-bot
+boto3
+langcodes
+language_data
+cryptography
