@@ -11,7 +11,7 @@ def scrape_page_source(url):
     max_sleep = 2
 
     options = webdriver.ChromeOptions()
-    options.add_argument("chromedriver.exe")
+    #options.add_argument("chromedriver.exe")
     driver = webdriver.Chrome(options=options)
     driver.get(url)
 
