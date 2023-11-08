@@ -106,6 +106,9 @@ def main():
         create_csv()
 
     bot_token = input("Please enter your token: ")
+    temp_encryption_key = input("Please enter encryption key: ")
+    with open('tempkey.txt', 'w') as file:
+        file.write(temp_encryption_key)
 
     print('Starting bot...')
     app = Application.builder().token(bot_token).build()
