@@ -12,7 +12,7 @@ def scrape_page_source(url):
 
     options = webdriver.ChromeOptions()
     options.add_argument("chromedriver.exe")
-    driver = webdriver.Chrome(options=options,service=webdriver.chrome.service.Service('/usr/bin/google-chrome/chromedriver.exe'))
+    driver = webdriver.Chrome(options=options)
     driver.get(url)
 
     random_sleeping_time = round(random.uniform(min_sleep, max_sleep), 3)
