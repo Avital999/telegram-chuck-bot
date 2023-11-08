@@ -7,11 +7,10 @@ URL = "https://www.liveabout.com/top-chuck-norris-jokes-2307758"
 
 
 def scrape_page_source(url):
-    min_sleep = 1
-    max_sleep = 2
+    min_sleep = 10
+    max_sleep = 12
 
     options = webdriver.ChromeOptions()
-    #options.add_argument("chromedriver.exe")
     driver = webdriver.Chrome(options=options)
     driver.get(url)
 
