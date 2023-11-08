@@ -17,7 +17,7 @@ This project is a Telegram bot designed to entertain users with Chuck Norris jok
 
 ## Configuration
 
-The bot requires an encryption key and a bot token for secure communication. These sensitive credentials are stored in separate files: `bottoken.txt` and `encryptionkey.txt`. For security reasons, these files are not included in the public GitHub repository.
+The bot requires a Bot token and an encryption key for secure communication. Please note that these sensitive credentials are not included in the project for security reasons
 
 ## Deployment
 
