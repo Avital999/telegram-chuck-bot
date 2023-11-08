@@ -11,8 +11,15 @@ def scrape_page_source(url):
     max_sleep = 2
 
     options = webdriver.ChromeOptions()
-    options.add_argument("chromedriver.exe")
-    driver = webdriver.Chrome(options=options)
+    options.binary_location = "/bin/google-chrome"  # Replace with the actual path to your Chrome executable
+    chrome_driver_path = "chromedriver.exe" # Replace with the actual path to your ChromeDriver executable
+
+    # Use the 'service' argument to specify the path to the ChromeDriver executable
+    chrome_service = webdriver.chrome.service.Service(executable_path=chrome_driver_path)
+
+    # Pass the 'service' and 'options' to the Chrome WebDriver constructor
+    driver = webdriver.Chrome(service=chrome_service, options=options)
+
     driver.get(url)
 
     random_sleeping_time = round(random.uniform(min_sleep, max_sleep), 3)
