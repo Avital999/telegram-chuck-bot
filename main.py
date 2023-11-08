@@ -10,15 +10,11 @@ import os
 BOT_USERNAME = '@ch_jokes_bot'
 
 
-# helpful functions
+# Helpful functions
 
 def add_language(user_id: int, language):
     update_user_preferred_language(user_id=user_id, language=language)
     return translate_text(target_language=language, text="no problem")
-
-
-def translate_joke(joke, language):
-    return translate_text(text=joke, target_language=language)
 
 
 def get_language_from_user_id(user_id):
@@ -36,7 +32,7 @@ def send_chuck_joke(joke_number: int, user_id: int):
         return 'Please set language first'
 
     translated_joke = translate_joke(joke=joke, language=language)
-    return translated_joke
+    return translate_text(text=joke, target_language=language)
 
 
 # Commands
