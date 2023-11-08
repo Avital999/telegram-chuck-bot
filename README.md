@@ -3,6 +3,7 @@
 ## Python Version
 
 This project is built using Python version 3.11.
+The project's Python dependencies can be found in the `requirements.txt` file.
 
 ## Project Description
 
@@ -17,12 +18,9 @@ This project is a Telegram bot designed to entertain users with Chuck Norris jok
 
 ## Configuration
 
-The bot requires a Bot token and an encryption key for secure communication. Please note that these sensitive credentials are not included in the project for security reasons
+The bot requires a Bot token and an encryption key for secure communication. Please note that these sensitive credentials are not included in the project for security reasons.
 
 ## Deployment
 
 The bot is deployed and already running on the AWS cloud, ensuring it is accessible to users around the clock.
 
-## Requirements
-
-The project's Python dependencies can be found in the `requirements.txt` file.
