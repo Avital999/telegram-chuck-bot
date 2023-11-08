@@ -1,8 +1,7 @@
 import csv
-from typing import Final
 
 FIELD_NAMES = ['user_id', 'language']
-LANGUAGES_CSV: Final = 'languages.csv'
+LANGUAGES_CSV = 'languages.csv'
 
 
 def update_user_preferred_language(user_id: int, language: str):
