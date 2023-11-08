@@ -12,7 +12,7 @@ def scrape_page_source(url):
 
     options = webdriver.ChromeOptions()
     options.binary_location = "/bin/google-chrome"  # Replace with the actual path to your Chrome executable
-    chrome_driver_path = "chromedriver.exe" # Replace with the actual path to your ChromeDriver executable
+    chrome_driver_path = "chromedriver" # Replace with the actual path to your ChromeDriver executable
 
     # Use the 'service' argument to specify the path to the ChromeDriver executable
     chrome_service = webdriver.chrome.service.Service(executable_path=chrome_driver_path)
