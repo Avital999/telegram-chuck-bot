@@ -163,3 +163,4 @@ cython_debug/
 /bottoken.txt
 /language.txt
 /encryptionkey.txt
+/tempkey.txt
