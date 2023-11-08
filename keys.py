@@ -1,4 +1,5 @@
 from cryptography.fernet import Fernet
+import os
 
 ENCRYPTED_KEYS_PATH = "encrypted_keys.txt"
 
@@ -17,9 +18,18 @@ def get_aws_secret_key():
 
 
 def get_key_for_encrption():
-    with open("encryptionkey.txt", "rb") as key_file:
+    with open(get_name_of_file_with_encryption_key(), "rb") as key_file:
         encryption_key = key_file.read()
     return encryption_key
+
+
+def get_name_of_file_with_encryption_key():
+    first_file = 'encryptionkey.txt'
+    second_file = 'tempkey.txt'
+
+    if os.path.exists(first_file):
+        return first_file
+    return second_file
 
 
 def decrypt_key_from_file(encryption_key, position):
