@@ -22,5 +22,5 @@ The bot requires a Bot token and an encryption key for secure communication. Ple
 
 ## Deployment
 
-The bot is deployed and already running on the AWS cloud, ensuring it is accessible to users around the clock.
+The bot is deployed on AWS cloud services, but it's currently inactive due to the key being disabled. 
 
